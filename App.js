@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Platform,
   StyleSheet,
@@ -5,34 +6,53 @@ import {
   View,
   KeyboardAvoidingView,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Keyboard
 } from "react-native";
 
 import Task from "./components/Task";
 
 export default function App() {
+  const [task, setTask] = useState();
+  const [taskArr, setTaskArr] = useState([])
+
+  const handleAddTask = () =>{
+    Keyboard.dismiss()
+    setTaskArr([...taskArr, task])
+    setTask(null)
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.tasksWrapper}>
-        <Text style={styles.sectionTitle}>My Countdowns</Text>
+        <Text style={styles.sectionTitle}>
+          My Countdowns
+          </Text>
         <View style={styles.items}>
-          <Task text={"Squid's First Day!!"} />
-          <Task text={"My birthday"} />
+          {taskArr.map((task, index) => {
+            return (
+              <Task key={index} text={task}/>
+            )
+          })}
         </View>
       </View>
-      
+
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.addTaskWrapper}
       >
-        <TextInput style={styles.input} placeHolder={"Add a task"} />
+        <TextInput style={styles.input} 
+        placeHolder={"Add a task"} 
+        value={task} 
+        onChangeText={text => setTask(text)} 
+        />
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleAddTask}>
           <View style={styles.addWrapper}>
             <Text style={styles.addText}>+</Text>
           </View>
         </TouchableOpacity>
-      </KeyboardAvoidingView >
+      </KeyboardAvoidingView>
     </View>
   );
 }
@@ -54,17 +74,17 @@ const styles = StyleSheet.create({
     marginTop: 25
   },
   addTaskWrapper: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 60,
-    width: '100%',
-    flexDirection: 'row',
+    width: "100%",
+    flexDirection: "row",
     justifyContent: "space-around",
-    alignItems: 'center'
+    alignItems: "center"
   },
   input: {
     paddingVertical: 10,
     paddingHorizontal: 15,
-    backgroundColor: '#f7f7f7',
+    backgroundColor: "#f7f7f7",
     borderRadius: 30,
     width: 250,
     shadowColor: "#000000",
@@ -75,8 +95,8 @@ const styles = StyleSheet.create({
   addWrapper: {
     width: 50,
     height: 50,
-    backgroundColor: '#f7f7f7',
-    justifyContent: 'center',
+    backgroundColor: "#f7f7f7",
+    justifyContent: "center",
     alignItems: "center",
     borderRadius: 90,
     shadowColor: "#000000",
@@ -86,6 +106,6 @@ const styles = StyleSheet.create({
   },
   addText: {
     fontSize: 25,
-    // fontWeight: "bold",
+    color: "#007AFE"
   }
 });
