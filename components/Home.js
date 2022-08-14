@@ -3,7 +3,10 @@ import {
   Platform,
   StyleSheet,
   Text,
+  Modal,
+  Button,
   View,
+  SafeAreaView,
   KeyboardAvoidingView,
   TextInput,
   TouchableOpacity,
@@ -11,45 +14,97 @@ import {
 } from "react-native";
 import Task from "./Task";
 
-export default function Home() {
-  const [task, setTask] = useState();
+export default function Home(props) {
+  const [taskName, setTaskName] = useState("");
+  const [month, setMonth] = useState("");
+  const [day, setDay] = useState("");
+  const [year, setYear] = useState("");
   const [taskArr, setTaskArr] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
 
-  const handleAddTask = () => {
-    Keyboard.dismiss();
+  const handleSubmit = () => {
+    let task = { taskName, month, day, year };
     setTaskArr([...taskArr, task]);
-    setTask(null);
+    console.log("Task", task);
+    setTaskName('');
+    setMonth('');
+    setDay('');
+    setYear('');
+    setModalVisible(false);
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.tasksWrapper}>
-        <Text style={styles.sectionTitle}>My Countdowns</Text>
-        <View style={styles.items}>
-          {taskArr.map((task, index) => {
-            return <Task key={index} text={task} />;
-          })}
+    <>
+      <View style={styles.container}>
+        <View style={styles.tasksWrapper}>
+          <Text style={styles.sectionTitle}>My Countdowns</Text>
+          <View style={styles.items}>
+            {taskArr.map((task, index) => {
+              return <Task key={index} text={task.taskName} />;
+            })}
+          </View>
         </View>
-      </View>
 
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.addTaskWrapper}
-      >
-        <TextInput
-          style={styles.input}
-          placeHolder={"Add a task"}
-          value={task}
-          onChangeText={(text) => setTask(text)}
-        />
-
-        <TouchableOpacity onPress={handleAddTask}>
+        <TouchableOpacity
+          onPress={() => {
+            setModalVisible(true);
+          }}
+        >
           <View style={styles.addWrapper}>
             <Text style={styles.addText}>+</Text>
           </View>
         </TouchableOpacity>
-      </KeyboardAvoidingView>
-    </View>
+
+        <Modal visible={modalVisible} animationType="slide">
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            // style={styles.addTaskWrapper}
+          >
+            <Text>Task Name</Text>
+            <TextInput
+              style={styles.input}
+              value={taskName}
+              onChangeText={(text) => {
+                setTaskName(text);
+              }}
+            />
+
+            <Text>Month</Text>
+            <TextInput
+              style={styles.input}
+              value={month}
+              onChangeText={(num) => setMonth(num)}
+            />
+
+            <Text>Day</Text>
+            <TextInput
+              style={styles.input}
+              value={day}
+              onChangeText={(num) => setDay(num)}
+            />
+
+            <Text>Year</Text>
+            <TextInput
+              style={styles.input}
+              value={year}
+              onChangeText={(num) => setYear(num)}
+            />
+            <Button
+              title="Submit"
+              onPress={() => {
+                handleSubmit();
+              }}
+            />
+            <Button
+              title="Close"
+              onPress={() => {
+                setModalVisible(false);
+              }}
+            />
+          </KeyboardAvoidingView>
+        </Modal>
+      </View>
+    </>
   );
 }
 

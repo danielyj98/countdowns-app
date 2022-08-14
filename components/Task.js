@@ -5,35 +5,17 @@ import {
   StyleSheet,
   Modal,
   Button,
-  TouchableOpacity, SafeAreaView
+  TouchableOpacity,
+  SafeAreaView
 } from "react-native";
 
 const Task = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <>
-      <TouchableOpacity
-        onPress={() => {
-          setModalVisible(true);
-        }}
-      >
-        <View style={styles.item}>
-          <Text>{props.text}</Text>
-        </View>
-      </TouchableOpacity>
-      <Modal visible={modalVisible} animationType="slide">
-        <SafeAreaView>
-          <Text>This is my modal!</Text>
-          <Button
-            title="Close"
-            onPress={() => {
-              setModalVisible(false);
-            }}
-          />
-        </SafeAreaView>
-      </Modal>
-    </>
+    <View style={styles.item}>
+      <Text>{props.text}</Text>
+    </View>
   );
 };
 
