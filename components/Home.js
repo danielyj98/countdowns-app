@@ -6,12 +6,12 @@ import {
   Modal,
   Button,
   View,
-  SafeAreaView,
   KeyboardAvoidingView,
   TextInput,
-  TouchableOpacity,
-  Keyboard
+  TouchableOpacity
 } from "react-native";
+import Countdown from "react-countdown";
+import dateConverter from "./dateConverter";
 import Task from "./Task";
 
 export default function Home(props) {
@@ -26,10 +26,10 @@ export default function Home(props) {
     let task = { taskName, month, day, year };
     setTaskArr([...taskArr, task]);
     console.log("Task", task);
-    setTaskName('');
-    setMonth('');
-    setDay('');
-    setYear('');
+    setTaskName("");
+    setMonth("");
+    setDay("");
+    setYear("");
     setModalVisible(false);
   };
 
@@ -40,7 +40,15 @@ export default function Home(props) {
           <Text style={styles.sectionTitle}>My Countdowns</Text>
           <View style={styles.items}>
             {taskArr.map((task, index) => {
-              return <Task key={index} text={task.taskName} />;
+              return (
+                <Task
+                  key={index}
+                  text={task.taskName}
+                  month={task.month}
+                  day={task.day}
+                  year={task.year}
+                />
+              );
             })}
           </View>
         </View>
@@ -58,7 +66,7 @@ export default function Home(props) {
         <Modal visible={modalVisible} animationType="slide">
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            // style={styles.addTaskWrapper}
+            style={styles.addTaskWrapper}
           >
             <Text>Task Name</Text>
             <TextInput
@@ -128,7 +136,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 60,
     width: "100%",
-    flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center"
   },

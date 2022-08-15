@@ -8,13 +8,18 @@ import {
   TouchableOpacity,
   SafeAreaView
 } from "react-native";
-
+import Countdown from "react-countdown";
+import dateConverter from "./dateConverter";
+let smale  = '01 Jan 2070 00:00:00 GMT'
 const Task = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
-
+  let clock = `${props.day} ${props.month} ${props.year} 00:00:00 GMT`
   return (
     <View style={styles.item}>
       <Text>{props.text}</Text>
+      
+        <Countdown date={Date.parse(clock)}/>
+        
     </View>
   );
 };
